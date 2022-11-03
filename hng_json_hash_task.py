@@ -4,7 +4,7 @@ import csv
 import hashlib
 m = hashlib.sha256()
 
-csv_file_path = 'NFT Naming csv - Team Engine.csv'
+csv_file_path = 'HNGi9 CSV FILE - Sheet1.csv'
 
 data = {}
 object_list = []
@@ -13,9 +13,10 @@ with open(csv_file_path, mode='r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     for row in csv_reader:
         series_number = row['Series Number']
-        file_name = row['FILE NAME']
+        file_name = row['Filename']
         uuid = row['UUID']
         description = row['Description']
+        gender = row['Gender']
         data[series_number] = row 
         output_json = {
             "format":"CHIP-0007",
@@ -27,7 +28,7 @@ with open(csv_file_path, mode='r') as csv_file:
             "series_total":526,
             "attributes": [
                 {"trait_type":"gender",
-                "value":""
+                "value":gender
                 }
             ],
             "collection":{
@@ -51,13 +52,14 @@ with open(csv_file_path, mode='r') as csv_file:
         output_json['hashed_key'] = hashed_key
         object_list.append(output_json)
 
-with open('NFT Naming csv - Team Engine.output.csv', mode='w') as new_csv_file:
-    fieldnames = ['Series Number','FILE NAME','UUID','Description','hashed_key']
+with open('HNGi9 CSV FILE - Sheet1.output.csv', mode='w') as new_csv_file:
+    fieldnames = ['Series Number','Filename','Name','Description','Gender','UUID','hashed_key']
     writer = csv.DictWriter(new_csv_file, fieldnames=fieldnames)
 
     writer.writeheader()
 
     for single_json_object in object_list:
         writer.writerow({'Series Number': single_json_object['series_number'], 
-                        'FILE NAME': single_json_object['name'], 'UUID': single_json_object['collection']['id'], 
-                        'Description': single_json_object['description'], 'hashed_key': single_json_object['hashed_key']}),
+                        'Filename': single_json_object['name'],'Name': single_json_object['name'],
+                        'Description': single_json_object['description'],'Gender': single_json_object['attributes'][0]['value'],
+                        'UUID': single_json_object['collection']['id'], 'hashed_key': single_json_object['hashed_key']}),
