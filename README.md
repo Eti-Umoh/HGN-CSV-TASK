@@ -2,3 +2,4 @@
 
 First save your csav file in same folder as your python file.
 Run your python file with below command in your terminal: "python <file_name>
+Then an output csv file will be created
